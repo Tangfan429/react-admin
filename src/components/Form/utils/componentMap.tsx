@@ -1,7 +1,7 @@
-import type { TFunction } from 'i18next';
-import type { ComponentType, FormList } from '#/form';
-import { initCompProps } from './helper';
-import { CreateBusiness } from '@/components/Business';
+import type { TFunction } from "i18next";
+import type { ComponentType, FormList } from "#/form";
+import { initCompProps } from "./helper";
+import { CreateBusiness } from "@/components/Business";
 import {
   Input,
   InputNumber,
@@ -13,44 +13,42 @@ import {
   Switch,
   Rate,
   Slider,
-  Upload
-} from 'antd';
-import ApiSelect from '@/components/Selects/ApiSelect';
-import ApiTreeSelect from '@/components/Selects/ApiTreeSelect';
-import BaseDatePicker from '@/components/Dates/BaseDatePicker';
-import BaseRangePicker from '@/components/Dates/BaseRangePicker';
-import BaseTimePicker from '@/components/Dates/BaseTimePicker';
-import BaseTimeRangePicker from '@/components/Dates/BaseTimeRangePicker';
-import BaseTransfer from '@/components/Transfer/BaseTransfer';
-import PasswordStrength from '@/components/PasswordStrength';
-import WangEditor from '@/components/WangEditor';
+  Upload,
+} from "antd";
+import ApiSelect from "@/components/Selects/ApiSelect";
+import ApiTreeSelect from "@/components/Selects/ApiTreeSelect";
+import BaseDatePicker from "@/components/Dates/BaseDatePicker";
+import BaseRangePicker from "@/components/Dates/BaseRangePicker";
+import BaseTimePicker from "@/components/Dates/BaseTimePicker";
+import BaseTimeRangePicker from "@/components/Dates/BaseTimeRangePicker";
+import BaseTransfer from "@/components/Transfer/BaseTransfer";
+import PasswordStrength from "@/components/PasswordStrength";
 
 const componentMap = new Map();
 
 // antd组件注入
-componentMap.set('Input', Input);
-componentMap.set('TextArea', Input.TextArea);
-componentMap.set('InputNumber', InputNumber);
-componentMap.set('InputPassword', Input.Password);
-componentMap.set('AutoComplete', AutoComplete);
-componentMap.set('Select', Select);
-componentMap.set('TreeSelect', TreeSelect);
-componentMap.set('Checkbox', Checkbox);
-componentMap.set('CheckboxGroup', Checkbox.Group);
-componentMap.set('RadioGroup', Radio.Group);
-componentMap.set('Switch', Switch);
-componentMap.set('Rate', Rate);
-componentMap.set('Slider', Slider);
-componentMap.set('Upload', Upload);
-componentMap.set('Transfer', BaseTransfer);
-componentMap.set('DatePicker', BaseDatePicker);
-componentMap.set('RangePicker', BaseRangePicker);
-componentMap.set('TimePicker', BaseTimePicker);
-componentMap.set('TimeRangePicker', BaseTimeRangePicker);
-componentMap.set('ApiSelect', ApiSelect);
-componentMap.set('ApiTreeSelect', ApiTreeSelect);
-componentMap.set('PasswordStrength', PasswordStrength);
-componentMap.set('Editor', WangEditor);
+componentMap.set("Input", Input);
+componentMap.set("TextArea", Input.TextArea);
+componentMap.set("InputNumber", InputNumber);
+componentMap.set("InputPassword", Input.Password);
+componentMap.set("AutoComplete", AutoComplete);
+componentMap.set("Select", Select);
+componentMap.set("TreeSelect", TreeSelect);
+componentMap.set("Checkbox", Checkbox);
+componentMap.set("CheckboxGroup", Checkbox.Group);
+componentMap.set("RadioGroup", Radio.Group);
+componentMap.set("Switch", Switch);
+componentMap.set("Rate", Rate);
+componentMap.set("Slider", Slider);
+componentMap.set("Upload", Upload);
+componentMap.set("Transfer", BaseTransfer);
+componentMap.set("DatePicker", BaseDatePicker);
+componentMap.set("RangePicker", BaseRangePicker);
+componentMap.set("TimePicker", BaseTimePicker);
+componentMap.set("TimeRangePicker", BaseTimeRangePicker);
+componentMap.set("ApiSelect", ApiSelect);
+componentMap.set("ApiTreeSelect", ApiTreeSelect);
+componentMap.set("PasswordStrength", PasswordStrength);
 
 // 业务组件注入
 CreateBusiness();
@@ -59,15 +57,19 @@ CreateBusiness();
  * 获取组件
  * @param item - 表单项
  */
-export function getComponent(t: TFunction, item: FormList, onPressEnter: () => void) {
+export function getComponent(
+  t: TFunction,
+  item: FormList,
+  onPressEnter: () => void
+) {
   const { component, componentProps } = item;
 
   // 当组件类型为自定义时
-  if (component === 'customize') {
+  if (component === "customize") {
     const { render } = item;
     // 获取组件自定义渲染失败直接返回空标签
     if (!render) return <></>;
-    addComponent('customize', render);
+    addComponent("customize", render);
   }
 
   const Comp = componentMap.get(component);
@@ -80,12 +82,9 @@ export function getComponent(t: TFunction, item: FormList, onPressEnter: () => v
         {...initCompProps(t, component, onPressEnter)}
         {...componentProps}
       />
-      {
-        item.unit &&
-        <span className='ml-5px whitespace-nowrap'>
-          { item.unit }
-        </span>
-      }
+      {item.unit && (
+        <span className="ml-5px whitespace-nowrap">{item.unit}</span>
+      )}
     </>
   );
 }

@@ -1,5 +1,6 @@
-import type { SideMenu } from '#/public';
-import { demo } from './demo';
+import type { SideMenu } from '#/public'
+import { demo } from './demo'
+import { testComponents } from './myRouter'
 
 /**
  * 弃用，改为动态菜单获取，如果需要静态菜单将useCommonStore中的menuList改为defaultMenus
@@ -19,8 +20,9 @@ export const defaultMenus: SideMenu[] = [
         labelEn: 'Data Overview',
         key: '/dashboard',
         rule: '/dashboard',
-      }
-    ]
+      },
+    ],
   },
-  ...demo as SideMenu[],
-];
+  ...(demo as SideMenu[]),
+  ...(testComponents as SideMenu[]),
+]

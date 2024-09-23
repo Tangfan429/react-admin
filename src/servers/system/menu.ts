@@ -1,11 +1,11 @@
-import type { Key } from 'react';
-import type { DataNode } from 'antd/es/tree';
-import type { FormData } from '#/form';
-import type { PageServerResult, PaginationData, SideMenu } from '#/public';
-import { request } from '@/servers/request';
+import type { Key } from "react";
+import type { DataNode } from "antd/es/tree";
+import type { FormData } from "#/form";
+import type { PageServerResult, PaginationData, SideMenu } from "#/public";
+import { request } from "@/servers/request";
 
 enum API {
-  URL = '/authority/menu'
+  URL = "/authority/menu",
 }
 
 /**
@@ -13,10 +13,9 @@ enum API {
  * @param data - 请求数据
  */
 export function getMenuPage(data: Partial<FormData> & PaginationData) {
-  return request.get<PageServerResult<FormData[]>>(
-    `${API.URL}/page`,
-    { params: data }
-  );
+  return request.get<PageServerResult<FormData[]>>(`${API.URL}/page`, {
+    params: data,
+  });
 }
 
 /**

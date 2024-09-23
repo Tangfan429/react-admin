@@ -1,12 +1,12 @@
-import type { LoginData, LoginResult } from '@/pages/login/model';
-import { request } from '@/servers/request';
+import type { LoginData, LoginResult } from "@/pages/login/model";
+import { request } from "@/servers/request";
 
 /**
  * 登录
  * @param data - 请求数据
  */
 export function login(data: LoginData) {
-  return request.post<LoginResult>('/login/v2', data);
+  return request.post<LoginResult>("/login/v2", data);
 }
 
 /**
@@ -14,5 +14,6 @@ export function login(data: LoginData) {
  * @param data - 请求数据
  */
 export function updatePassword(data: object) {
-  return request.post('/update-password', data);
+  return request.post("/update-password", data);
 }
+// https://mock.mengxuegu.com/mock/66ec248690f5322f879d83ab/example/login/v2
