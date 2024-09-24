@@ -8,7 +8,7 @@
 		"build": "tsc && vite build",
 		"build:dev": "tsc && vite build --mode dev",
 		"build:test": "tsc && vite build --mode test",
-		"lint:eslint": "eslint --ext .js,.ts,.tsx ./src",
+		"lint:eslint": "eslint --fix --ext .js,.ts,.tsx ./src",
 		"lint:prettier": "prettier --write --loglevel warn \"src/**/*.{js,ts,json,tsx,css,less,scss,html,md}\"",
 		"lint:stylelint": "stylelint --cache --fix \"**/*.{jsx,tsx,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
 		"preview": "vite preview"

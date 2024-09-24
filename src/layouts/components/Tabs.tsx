@@ -15,211 +15,204 @@ import TabMaximize from "./TabMaximize";
 import TabOptions from "./TabOptions";
 
 function LayoutTabs() {
-  const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
-  const { pathname, search } = useLocation();
-  const uri = pathname + search;
-  const { refresh } = useAliveController();
-  const [messageApi, contextHolder] = message.useMessage();
-  const [time, setTime] = useState<null | NodeJS.Timeout>(null);
-  const [refreshTime, seRefreshTime] = useState<null | NodeJS.Timeout>(null);
-  const setRefresh = usePublicStore((state) => state.setRefresh);
-  const {
-    tabs,
-    isLock,
-    activeKey, // 选中的标签值
-    setActiveKey,
-    addTabs,
-    closeTabs,
-    setNav,
-    toggleLock,
-    switchTabsLang,
-  } = useTabsStore((state) => state);
+	const { t, i18n } = useTranslation();
+	const navigate = useNavigate();
+	const { pathname, search } = useLocation();
+	const uri = pathname + search;
+	const { refresh } = useAliveController();
+	const [messageApi, contextHolder] = message.useMessage();
+	const [time, setTime] = useState<null | NodeJS.Timeout>(null);
+	const [refreshTime, seRefreshTime] = useState<null | NodeJS.Timeout>(null);
+	const setRefresh = usePublicStore(state => state.setRefresh);
+	const {
+		tabs,
+		isLock,
+		activeKey, // 选中的标签值
+		setActiveKey,
+		addTabs,
+		closeTabs,
+		setNav,
+		toggleLock,
+		switchTabsLang
+	} = useTabsStore(state => state);
 
-  // 获取当前语言
-  const currentLanguage = i18n.language;
+	// 获取当前语言
+	const currentLanguage = i18n.language;
 
-  const { permissions, isMaximize, menuList } = useCommonStore();
+	const { permissions, isMaximize, menuList } = useCommonStore();
 
-  /**
-   * 添加标签
-   * @param path - 路径
-   */
-  const handleAddTab = useCallback(
-    (path = uri) => {
-      // 当值为空时匹配路由
-      if (permissions.length > 0) {
-        if (path === "/") return;
-        const menuByKeyProps = {
-          menus: menuList,
-          permissions,
-          key: path,
-        };
-        const newItems = getMenuByKey(menuByKeyProps);
-        if (newItems?.key) {
-          setActiveKey(newItems.key);
-          setNav(newItems.nav);
-          addTabs(newItems);
-        } else {
-          setActiveKey(path);
-        }
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [permissions, menuList]
-  );
+	/**
+	 * 添加标签
+	 * @param path - 路径
+	 */
+	const handleAddTab = useCallback(
+		(path = uri) => {
+			// 当值为空时匹配路由
+			if (permissions.length > 0) {
+				if (path === "/") return;
+				const menuByKeyProps = {
+					menus: menuList,
+					permissions,
+					key: path
+				};
+				const newItems = getMenuByKey(menuByKeyProps);
+				if (newItems?.key) {
+					setActiveKey(newItems.key);
+					setNav(newItems.nav);
+					addTabs(newItems);
+				} else {
+					setActiveKey(path);
+				}
+			}
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		},
+		[permissions, menuList]
+	);
 
-  useEffect(() => {
-    handleAddTab();
-  }, [handleAddTab, permissions, menuList]);
+	useEffect(() => {
+		handleAddTab();
+	}, [handleAddTab, permissions, menuList]);
 
-  useEffect(() => {
-    switchTabsLang(currentLanguage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentLanguage, tabs]);
+	useEffect(() => {
+		switchTabsLang(currentLanguage);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentLanguage, tabs]);
 
-  useEffect(() => {
-    return () => {
-      if (time) {
-        clearTimeout(time);
-        setTime(null);
-      }
+	useEffect(() => {
+		return () => {
+			if (time) {
+				clearTimeout(time);
+				setTime(null);
+			}
 
-      if (refreshTime) {
-        clearTimeout(refreshTime);
-        seRefreshTime(null);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+			if (refreshTime) {
+				clearTimeout(refreshTime);
+				seRefreshTime(null);
+			}
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-  useEffect(() => {
-    // 当选中贴标签不等于当前路由则跳转
-    if (activeKey !== uri) {
-      const key = isLock ? activeKey : uri;
-      handleAddTab(key);
+	useEffect(() => {
+		// 当选中贴标签不等于当前路由则跳转
+		if (activeKey !== uri) {
+			const key = isLock ? activeKey : uri;
+			handleAddTab(key);
 
-      if (isLock) {
-        navigate(key);
-        toggleLock(false);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeKey, uri]);
+			if (isLock) {
+				navigate(key);
+				toggleLock(false);
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [activeKey, uri]);
 
-  /**
-   * 处理更改
-   * @param key - 唯一值
-   */
-  const onChange = (key: string) => {
-    navigate(key);
-  };
+	/**
+	 * 处理更改
+	 * @param key - 唯一值
+	 */
+	const onChange = (key: string) => {
+		navigate(key);
+	};
 
-  /**
-   * 删除标签
-   * @param targetKey - 目标key值
-   */
-  const remove = (targetKey: string) => {
-    closeTabs(targetKey);
-  };
+	/**
+	 * 删除标签
+	 * @param targetKey - 目标key值
+	 */
+	const remove = (targetKey: string) => {
+		closeTabs(targetKey);
+	};
 
-  /**
-   * 处理编辑
-   * @param targetKey - 目标key值
-   * @param action - 动作
-   */
-  const onEdit: TabsProps["onEdit"] = (targetKey, action) => {
-    if (action === "remove") {
-      remove(targetKey as string);
-    }
-  };
+	/**
+	 * 处理编辑
+	 * @param targetKey - 目标key值
+	 * @param action - 动作
+	 */
+	const onEdit: TabsProps["onEdit"] = (targetKey, action) => {
+		if (action === "remove") {
+			remove(targetKey as string);
+		}
+	};
 
-  /**
-   * 点击重新加载
-   * @param key - 点击值
-   */
-  const onClickRefresh = useCallback(
-    (key = activeKey) => {
-      // 如果key不是字符串格式则退出
-      if (typeof key !== "string") return;
+	/**
+	 * 点击重新加载
+	 * @param key - 点击值
+	 */
+	const onClickRefresh = useCallback(
+		(key = activeKey) => {
+			// 如果key不是字符串格式则退出
+			if (typeof key !== "string") return;
 
-      // 定时器没有执行时运行
-      if (!time) {
-        setRefresh(true);
-        refresh(key);
+			// 定时器没有执行时运行
+			if (!time) {
+				setRefresh(true);
+				refresh(key);
 
-        setTime(
-          setTimeout(() => {
-            messageApi.success({
-              content: t("public.refreshSuccessfully"),
-              key: "refresh",
-            });
-            setRefresh(false);
-            setTime(null);
-          }, 100)
-        );
+				setTime(
+					setTimeout(() => {
+						messageApi.success({
+							content: t("public.refreshSuccessfully"),
+							key: "refresh"
+						});
+						setRefresh(false);
+						setTime(null);
+					}, 100)
+				);
 
-        seRefreshTime(
-          setTimeout(() => {
-            seRefreshTime(null);
-          }, 1000)
-        );
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [activeKey, time]
-  );
+				seRefreshTime(
+					setTimeout(() => {
+						seRefreshTime(null);
+					}, 1000)
+				);
+			}
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		},
+		[activeKey, time]
+	);
 
-  // 渲染重新加载
-  const RefreshRender = useMemo(() => {
-    return <TabRefresh isRefresh={!!refreshTime} onClick={onClickRefresh} />;
-  }, [refreshTime, onClickRefresh]);
+	// 渲染重新加载
+	const RefreshRender = useMemo(() => {
+		return <TabRefresh isRefresh={!!refreshTime} onClick={onClickRefresh} />;
+	}, [refreshTime, onClickRefresh]);
 
-  // 渲染标签操作
-  const TabOptionsRender = useMemo(() => {
-    return <TabOptions activeKey={activeKey} handleRefresh={onClickRefresh} />;
-  }, [activeKey, onClickRefresh]);
+	// 渲染标签操作
+	const TabOptionsRender = useMemo(() => {
+		return <TabOptions activeKey={activeKey} handleRefresh={onClickRefresh} />;
+	}, [activeKey, onClickRefresh]);
 
-  // 渲染最大化操作
-  const TabMaximizeRender = useMemo(() => {
-    return <TabMaximize />;
-  }, []);
+	// 渲染最大化操作
+	const TabMaximizeRender = useMemo(() => {
+		return <TabMaximize />;
+	}, []);
 
-  // 标签栏功能
-  const tabOptions = [
-    { element: RefreshRender },
-    { element: TabOptionsRender },
-    { element: TabMaximizeRender },
-  ];
+	// 标签栏功能
+	const tabOptions = [{ element: RefreshRender }, { element: TabOptionsRender }, { element: TabMaximizeRender }];
 
-  // 下拉菜单
-  const dropdownMenuParams = { activeKey, handleRefresh: onClickRefresh };
-  const [items, onClick] = useDropdownMenu(dropdownMenuParams);
+	// 下拉菜单
+	const dropdownMenuParams = { activeKey, handleRefresh: onClickRefresh };
+	const [items, onClick] = useDropdownMenu(dropdownMenuParams);
 
-  /** 二次封装标签 */
-  const renderTabBar: TabsProps["renderTabBar"] = (
-    tabBarProps,
-    DefaultTabBar
-  ) => (
-    <DefaultTabBar {...tabBarProps}>
-      {(node) => (
-        <Dropdown
-          key={node.key}
-          menu={{
-            items: items(node.key as string),
-            onClick: (e) => onClick(e.key, node.key as string),
-          }}
-          trigger={["contextMenu"]}
-        >
-          <div className="mr-1px">{node}</div>
-        </Dropdown>
-      )}
-    </DefaultTabBar>
-  );
+	/** 二次封装标签 */
+	const renderTabBar: TabsProps["renderTabBar"] = (tabBarProps, DefaultTabBar) => (
+		<DefaultTabBar {...tabBarProps}>
+			{node => (
+				<Dropdown
+					key={node.key}
+					menu={{
+						items: items(node.key as string),
+						onClick: e => onClick(e.key, node.key as string)
+					}}
+					trigger={["contextMenu"]}
+				>
+					<div className="mr-1px">{node}</div>
+				</Dropdown>
+			)}
+		</DefaultTabBar>
+	);
 
-  return (
-    <div
-      className={`
+	return (
+		<div
+			className={`
       flex
       items-center
       justify-between
@@ -227,48 +220,48 @@ function LayoutTabs() {
       transition-all
       ${isMaximize ? styles.conMaximize : ""}
     `}
-    >
-      {contextHolder}
-      {tabs.length > 0 ? (
-        // <Tabs
-        //   hideAdd
-        //   className="w-full h-30px py-0"
-        //   onChange={onChange}
-        //   activeKey={activeKey}
-        //   type="editable-card"
-        //   onEdit={onEdit}
-        //   renderTabBar={renderTabBar}
-        // >
-        //   {tabs?.map((item) => (
-        //     <Tabs.TabPane key={item.key} tab={item.label}>
-        //       {item.label}
-        //     </Tabs.TabPane>
-        //   ))}
-        // </Tabs>
-        //解决TabPane废弃报错
-        <Tabs
-          hideAdd
-          className="w-full h-30px py-0"
-          onChange={onChange}
-          activeKey={activeKey}
-          type="editable-card"
-          onEdit={onEdit}
-          renderTabBar={renderTabBar}
-          items={tabs.map((item) => ({
-            key: item.key,
-            label: item.label,
-            children: item.label, // 或者你想显示的内容
-          }))}
-        />
-      ) : (
-        <span></span>
-      )}
+		>
+			{contextHolder}
+			{tabs.length > 0 ? (
+				// <Tabs
+				//   hideAdd
+				//   className="w-full h-30px py-0"
+				//   onChange={onChange}
+				//   activeKey={activeKey}
+				//   type="editable-card"
+				//   onEdit={onEdit}
+				//   renderTabBar={renderTabBar}
+				// >
+				//   {tabs?.map((item) => (
+				//     <Tabs.TabPane key={item.key} tab={item.label}>
+				//       {item.label}
+				//     </Tabs.TabPane>
+				//   ))}
+				// </Tabs>
+				//解决TabPane废弃报错
+				<Tabs
+					hideAdd
+					className="w-full h-30px py-0"
+					onChange={onChange}
+					activeKey={activeKey}
+					type="editable-card"
+					onEdit={onEdit}
+					renderTabBar={renderTabBar}
+					items={tabs.map(item => ({
+						key: item.key,
+						label: item.label,
+						children: item.label // 或者你想显示的内容
+					}))}
+				/>
+			) : (
+				<span></span>
+			)}
 
-      <div className="flex">
-        {tabOptions?.map((item, index) => (
-          <div
-            key={index}
-            className={`
+			<div className="flex">
+				{tabOptions?.map((item, index) => (
+					<div
+						key={index}
+						className={`
                 ${styles.leftDivide}
                 change
                 divide-solid
@@ -279,13 +272,13 @@ function LayoutTabs() {
                 place-content-center
                 items-center
               `}
-          >
-            {item.element}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+					>
+						{item.element}
+					</div>
+				))}
+			</div>
+		</div>
+	);
 }
 
 export default LayoutTabs;

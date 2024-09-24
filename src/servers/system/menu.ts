@@ -5,7 +5,7 @@ import type { PageServerResult, PaginationData, SideMenu } from "#/public";
 import { request } from "@/servers/request";
 
 enum API {
-  URL = "/authority/menu",
+	URL = "/authority/menu"
 }
 
 /**
@@ -13,9 +13,9 @@ enum API {
  * @param data - 请求数据
  */
 export function getMenuPage(data: Partial<FormData> & PaginationData) {
-  return request.get<PageServerResult<FormData[]>>(`${API.URL}/page`, {
-    params: data,
-  });
+	return request.get<PageServerResult<FormData[]>>(`${API.URL}/page`, {
+		params: data
+	});
 }
 
 /**
@@ -23,7 +23,7 @@ export function getMenuPage(data: Partial<FormData> & PaginationData) {
  * @param id - ID
  */
 export function getMenuById(id: string) {
-  return request.get<FormData>(`${API.URL}/detail?id=${id}`);
+	return request.get<FormData>(`${API.URL}/detail?id=${id}`);
 }
 
 /**
@@ -31,7 +31,7 @@ export function getMenuById(id: string) {
  * @param data - 请求数据
  */
 export function createMenu(data: FormData) {
-  return request.post(API.URL, data);
+	return request.post(API.URL, data);
 }
 
 /**
@@ -40,7 +40,7 @@ export function createMenu(data: FormData) {
  * @param data - 请求数据
  */
 export function updateMenu(id: string, data: FormData) {
-  return request.put(`${API.URL}/${id}`, data);
+	return request.put(`${API.URL}/${id}`, data);
 }
 
 /**
@@ -48,7 +48,7 @@ export function updateMenu(id: string, data: FormData) {
  * @param id - 删除id值
  */
 export function deleteMenu(id: string) {
-  return request.delete(`${API.URL}/${id}`);
+	return request.delete(`${API.URL}/${id}`);
 }
 
 /**
@@ -56,11 +56,11 @@ export function deleteMenu(id: string) {
  * @param data - 搜索数据
  */
 interface PermissionResult {
-  treeData: DataNode[];
-  defaultCheckedKeys: Key[];
+	treeData: DataNode[];
+	defaultCheckedKeys: Key[];
 }
 export function getPermission(data: object) {
-  return request.get<PermissionResult>(`${API.URL}/tree`, { params: data });
+	return request.get<PermissionResult>(`${API.URL}/tree`, { params: data });
 }
 
 /**
@@ -68,7 +68,7 @@ export function getPermission(data: object) {
  * @param data - 权限数据
  */
 export function savePermission(data: object) {
-  return request.put(`${API.URL}/authorize/save`, data);
+	return request.put(`${API.URL}/authorize/save`, data);
 }
 
 /**
@@ -76,5 +76,5 @@ export function savePermission(data: object) {
  * @param data - 请求数据
  */
 export function getMenuList() {
-  return request.get<SideMenu[]>(`/menu/list/v3`);
+	return request.get<SideMenu[]>(`/menu/list/v3`);
 }

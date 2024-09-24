@@ -1,16 +1,15 @@
 import { HTMLAttributes } from "react";
 
-interface Props extends HTMLAttributes<unknown> {
-}
+interface Props extends HTMLAttributes<unknown> {}
 
 function BaseCard(props: Props) {
-  const { children, className } = props;
+	const { children, className } = props;
 
-  return (
-    <div
-      { ...props }
-      id="card"
-      className={`
+	return (
+		<div
+			{...props}
+			id="card"
+			className={`
         min-w-980px
         h-full
         box-border
@@ -22,10 +21,10 @@ function BaseCard(props: Props) {
         rounded-5
         ${className}
       `}
-    >
-      { children }
-    </div>
-  );
+		>
+			{children}
+		</div>
+	);
 }
 
 export default BaseCard;

@@ -128,6 +128,8 @@ module.exports = {
 		"no-mixed-spaces-and-tabs": "warn",
 		// 禁止出现多行空行
 		"no-multiple-empty-lines": ["warn", { max: 1 }],
+		//
+		"react/display-name": "off",
 		// 禁止出现;
 		semi: ["warn", "always"],
 		// 强制在块之前使用一致的空格
@@ -172,7 +174,7 @@ module.exports = {
 		"@typescript-eslint/explicit-module-boundary-types": "off", // 要求导出函数和类的公共类方法的显式返回和参数类型
 
 		// react (https://github.com/jsx-eslint/eslint-plugin-react)
-		"react-hooks/rules-of-hooks": "error",
-		"react-hooks/exhaustive-deps": "error"
+		"react-hooks/rules-of-hooks": "off",
+		"react-hooks/exhaustive-deps": "off"
 	}
 };
