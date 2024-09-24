@@ -1,5 +1,6 @@
-import React from 'react'
+import React from "react";
+import "./test.less";
 
 export default function TestComponents() {
-  return <div>testComponents</div>
+  return <div>testComponents</div>;
 }

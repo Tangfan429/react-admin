@@ -86,8 +86,10 @@
     },
     {
       "files": ["*.less", "**/*.less"],
-      "customSyntax": "postcss-less",
-      "extends": ["stylelint-config-standard", "stylelint-config-recommended-less"]
+      "extends": [
+        "stylelint-config-standard",
+        "stylelint-config-recommended-less"
+      ]
     }
   ]
 }
