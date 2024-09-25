@@ -11,7 +11,8 @@
 		"lint:eslint": "eslint --fix --ext .js,.ts,.tsx ./src",
 		"lint:prettier": "prettier --write --loglevel warn \"src/**/*.{js,ts,json,tsx,css,less,scss,html,md}\"",
 		"lint:stylelint": "stylelint --cache --fix \"**/*.{less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"prepare": "husky"
 	},
 	"dependencies": {
 		"@ant-design/cssinjs": "^1.19.1",
