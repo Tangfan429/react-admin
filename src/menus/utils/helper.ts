@@ -421,8 +421,11 @@ export function handleFilterNav(list: string[]): NavData[] {
  * @param route - 路由
  * @param permissions - 权限
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function hasPermission(route: SideMenu, permissions: string[]): boolean {
-	return permissions?.includes(route?.rule || "");
+	// return permissions?.includes(route?.rule || "");
+	//关闭路由权限校验
+	return true;
 }
 
 /**
