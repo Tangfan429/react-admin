@@ -12,7 +12,7 @@
 		"lint:prettier": "prettier --write --loglevel warn \"src/**/*.{js,ts,json,tsx,css,less,scss,html,md}\"",
 		"lint:stylelint": "stylelint --cache --fix \"**/*.{jsx,tsx,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
 		"preview": "vite preview",
-		"prepare": "husky"
+		"prepare": "husky install"
 	},
 	"dependencies": {
 		"@ant-design/cssinjs": "^1.19.1",
